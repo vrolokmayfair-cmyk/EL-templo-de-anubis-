@@ -77,4 +77,23 @@ if nombre_user or es_instructor:
         materiales = [
             {"titulo": "Clase 1", "url": "https://drive.google.com/file/d/159pd32ErBY5ivTRUhZoY-sHxstGc9puB/view", "dia": 0},
             {"titulo": "Clase 2", "url": "https://drive.google.com/file/d/1FOcbDLocK2i6xf_FH-APCF2GvM7iZwY5/view", "dia": 7},
-            {"titulo": "Clase de tiradas", "url": "
+            {"titulo": "Clase de tiradas", "url": "https://drive.google.com/file/d/19nYTrsNW76GI4pLvGddXZlZ4XfMdgFeW/view", "dia": 14},
+            {"titulo": "Clase de arcanos menores", "url": "https://drive.google.com/file/d/1jYaMsGXcIbMYw18GNNqUTbOyidi5UjWa/view", "dia": 21}
+        ]
+
+        for c in materiales:
+            if es_instructor or dias_pasados >= c["dia"]:
+                st.write(f"### ✅ {c['titulo']}")
+                st.link_button(f"Descargar material", c["url"])
+                st.write("---")
+            else:
+                st.warning(f"🔒 {c['titulo']} (Disponible en {c['dia'] - dias_pasados} días)")
+
+    with tab2:
+        st.info("Próximamente: Materiales de Runas Vikingas.")
+
+    with tab3:
+        st.info("Próximamente: Materiales de Wicca y Magia.")
+
+else:
+    st.info("👈 Por favor, ingresa tu nombre en el registro lateral para acceder.")
