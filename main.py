@@ -22,7 +22,7 @@ st.markdown("""
         border-radius: 5px 5px 0 0; 
         color: #d4af37 !important; 
     }
-    /* Estilo para la pestaña seleccionada: Texto negro para que sea legible sobre el amarillo */
+    /* Estilo para la pestaña seleccionada: Texto negro sobre amarillo */
     .stTabs [aria-selected="true"] { 
         background-color: #d4af37 !important; 
         color: #050505 !important; 
@@ -35,6 +35,13 @@ st.markdown("""
         border: none; 
     }
     .stButton>button:hover { background-color: #f5f5dc; box-shadow: 0 0 15px #d4af37; }
+    
+    /* Estilo para la imagen de portada */
+    .cover-img {
+        border: 2px solid #d4af37;
+        border-radius: 15px;
+        margin-bottom: 20px;
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -50,6 +57,7 @@ with st.sidebar:
     st.header("🔐 Área del Instructor")
     password = st.text_input("Clave Maestra:", type="password")
     
+    # Identidad del Maestro Vrolok
     es_instructor = (password == "anubis2026")
     
     if es_instructor:
@@ -68,16 +76,23 @@ if nombre_user or es_instructor:
         dias_pasados = (hoy - fecha_inscripcion).days
         st.success(f"Bienvenido/a a El Templo de Anubis, {nombre_user}")
 
-    # Agregamos una pestaña de "Inicio" para que no se abra Tarot de inmediato
+    # Pestañas con "Inicio" como la primera opción
     tab_home, tab1, tab2, tab3 = st.tabs(["🏛 Inicio", "Tarot de Marsella", "Runas Vikingas", "Wicca & Magia"])
 
     with tab_home:
+        # --- IMAGEN DE PORTADA ---
+        # Convertimos el enlace de Drive a un enlace directo para Streamlit
+        img_url = "https://drive.google.com/uc?id=1w5HrhaJ2zTry18aSflGsDxTv-ianMTEC"
+        st.image(img_url, use_container_width=True, caption="El Templo de Anubis - Sabiduría Ancestral")
+        
         st.subheader("Bienvenido al Santuario del Conocimiento")
         st.write("Selecciona uno de los módulos superiores para comenzar tu formación.")
-        st.write("Recuerda que los materiales se liberan conforme avanza tu tiempo de estudio.")
+        st.write("Cada paso que des en este templo te acercará más a la maestría de las artes sagradas.")
 
     with tab1:
         st.subheader("Módulo: Tarot de Marsella")
+        
+        # Orden: Clase 1 (Introducción), Clase 2 (Mazo)
         materiales = [
             {"titulo": "Clase 1", "url": "https://drive.google.com/file/d/159pd32ErBY5ivTRUhZoY-sHxstGc9puB/view", "dia": 0},
             {"titulo": "Clase 2", "url": "https://drive.google.com/file/d/1FOcbDLocK2i6xf_FH-APCF2GvM7iZwY5/view", "dia": 7},
