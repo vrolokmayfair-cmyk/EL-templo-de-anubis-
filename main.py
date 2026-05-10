@@ -29,7 +29,7 @@ with st.sidebar:
     st.header("🔐 Área del Instructor")
     password = st.text_input("Clave Maestra:", type="password")
     
-    # Verificación de identidad
+    # Verificación de identidad con el nuevo nombre: Vrolok
     es_instructor = (password == "anubis2026")
     
     if es_instructor:
@@ -39,10 +39,10 @@ with st.sidebar:
 # --- LÓGICA DE VISUALIZACIÓN ---
 if nombre_user or es_instructor:
     
-    # Acceso total si es instructor
+    # Acceso total si es instructor Vrolok
     if es_instructor:
         dias_pasados = 100 
-        saludo = f"Bienvenido Maestro Juan Carlos Sumano" if not nombre_user else f"Operando como: {nombre_user}"
+        saludo = f"Bienvenido Maestro Vrolok" if not nombre_user else f"Maestro Vrolok operando como: {nombre_user}"
         st.info(saludo)
     else:
         hoy = datetime.now().date()
@@ -55,12 +55,12 @@ if nombre_user or es_instructor:
     with tab1:
         st.subheader("Módulo: Tarot de Marsella")
         
-        # Lista de materiales con el orden corregido
+        # Lista de materiales con títulos simplificados y orden corregido
         materiales = [
-            {"titulo": "Clase 1: Mazo para imprimir y colorear", "url": "https://drive.google.com/file/d/1FOcbDLocK2i6xf_FH-APCF2GvM7iZwY5/view", "dia": 0},
-            {"titulo": "Clase 2: Introducción, Ética y Anatomía Sagrada", "url": "https://drive.google.com/file/d/159pd32ErBY5ivTRUhZoY-sHxstGc9puB/view", "dia": 7},
-            {"titulo": "Clase de Tiradas: Leyes Camoin", "url": "https://drive.google.com/file/d/19nYTrsNW76GI4pLvGddXZlZ4XfMdgFeW/view", "dia": 14},
-            {"titulo": "Clase de Arcanos Menores: Figuras de la Corte", "url": "https://drive.google.com/file/d/1jYaMsGXcIbMYw18GNNqUTbOyidi5UjWa/view", "dia": 21}
+            {"titulo": "Clase 1", "url": "https://drive.google.com/file/d/159pd32ErBY5ivTRUhZoY-sHxstGc9puB/view", "dia": 0},
+            {"titulo": "Clase 2", "url": "https://drive.google.com/file/d/1FOcbDLocK2i6xf_FH-APCF2GvM7iZwY5/view", "dia": 7},
+            {"titulo": "Clase de tiradas", "url": "https://drive.google.com/file/d/19nYTrsNW76GI4pLvGddXZlZ4XfMdgFeW/view", "dia": 14},
+            {"titulo": "Clase de arcanos menores", "url": "https://drive.google.com/file/d/1jYaMsGXcIbMYw18GNNqUTbOyidi5UjWa/view", "dia": 21}
         ]
 
         for c in materiales:
