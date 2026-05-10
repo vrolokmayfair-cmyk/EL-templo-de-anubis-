@@ -22,7 +22,6 @@ st.markdown("""
         border-radius: 5px 5px 0 0; 
         color: #d4af37 !important; 
     }
-    /* Estilo para la pestaña seleccionada: Texto negro sobre amarillo */
     .stTabs [aria-selected="true"] { 
         background-color: #d4af37 !important; 
         color: #050505 !important; 
@@ -35,17 +34,16 @@ st.markdown("""
         border: none; 
     }
     .stButton>button:hover { background-color: #f5f5dc; box-shadow: 0 0 15px #d4af37; }
-    
-    /* Estilo para la imagen de portada */
-    .cover-img {
-        border: 2px solid #d4af37;
-        border-radius: 15px;
-        margin-bottom: 20px;
-    }
     </style>
     """, unsafe_allow_html=True)
 
+# --- PORTADA FIJA (Visible antes y después de iniciar sesión) ---
 st.title("🌙 El Templo de Anubis")
+
+# Enlace directo de la imagen de portada
+img_url = "https://drive.google.com/uc?id=1w5HrhaJ2zTry18aSflGsDxTv-ianMTEC"
+st.image(img_url, use_container_width=True)
+
 st.write("---")
 
 # --- BARRA LATERAL ---
@@ -57,7 +55,6 @@ with st.sidebar:
     st.header("🔐 Área del Instructor")
     password = st.text_input("Clave Maestra:", type="password")
     
-    # Identidad del Maestro Vrolok
     es_instructor = (password == "anubis2026")
     
     if es_instructor:
@@ -76,23 +73,16 @@ if nombre_user or es_instructor:
         dias_pasados = (hoy - fecha_inscripcion).days
         st.success(f"Bienvenido/a a El Templo de Anubis, {nombre_user}")
 
-    # Pestañas con "Inicio" como la primera opción
+    # Pestañas de contenido
     tab_home, tab1, tab2, tab3 = st.tabs(["🏛 Inicio", "Tarot de Marsella", "Runas Vikingas", "Wicca & Magia"])
 
     with tab_home:
-        # --- IMAGEN DE PORTADA ---
-        # Convertimos el enlace de Drive a un enlace directo para Streamlit
-        img_url = "https://drive.google.com/uc?id=1w5HrhaJ2zTry18aSflGsDxTv-ianMTEC"
-        st.image(img_url, use_container_width=True, caption="El Templo de Anubis - Sabiduría Ancestral")
-        
-        st.subheader("Bienvenido al Santuario del Conocimiento")
-        st.write("Selecciona uno de los módulos superiores para comenzar tu formación.")
-        st.write("Cada paso que des en este templo te acercará más a la maestría de las artes sagradas.")
+        st.subheader("Santuario del Conocimiento")
+        st.write("Explora los misterios antiguos a través de nuestros módulos de formación académica.")
+        st.write("Selecciona una pestaña superior para acceder a tus lecciones.")
 
     with tab1:
         st.subheader("Módulo: Tarot de Marsella")
-        
-        # Orden: Clase 1 (Introducción), Clase 2 (Mazo)
         materiales = [
             {"titulo": "Clase 1", "url": "https://drive.google.com/file/d/159pd32ErBY5ivTRUhZoY-sHxstGc9puB/view", "dia": 0},
             {"titulo": "Clase 2", "url": "https://drive.google.com/file/d/1FOcbDLocK2i6xf_FH-APCF2GvM7iZwY5/view", "dia": 7},
@@ -108,11 +98,9 @@ if nombre_user or es_instructor:
             else:
                 st.warning(f"🔒 {c['titulo']} (Disponible en {c['dia'] - dias_pasados} días)")
 
-    with tab2:
-        st.info("Próximamente: Materiales de Runas Vikingas.")
-
-    with tab3:
-        st.info("Próximamente: Materiales de Wicca y Magia.")
+    with tab2: st.info("Próximamente: Materiales de Runas Vikingas.")
+    with tab3: st.info("Próximamente: Materiales de Wicca y Magia.")
 
 else:
-    st.info("👈 Por favor, ingresa tu nombre en el registro lateral para acceder.")
+    # Mensaje visible cuando NO han iniciado sesión
+    st.info("👈 El acceso al conocimiento requiere identificación. Por favor, regístrate en la barra lateral.")
