@@ -4,7 +4,7 @@ from datetime import datetime
 # 1. Configuración de la plataforma
 st.set_page_config(page_title="El Templo de Anubis", layout="wide")
 
-# Estilo CSS para fondo negro y letras doradas (Se mantiene para la mística del Templo)
+# Estilo CSS para fondo negro y letras doradas
 st.markdown("""
     <style>
     .stApp { background-color: #050505; color: #d4af37; }
@@ -22,7 +22,11 @@ st.markdown("""
         border-radius: 5px 5px 0 0; 
         color: #d4af37 !important; 
     }
-    .stTabs [aria-selected="true"] { background-color: #d4af37 !important; color: #050505 !important; }
+    /* Estilo para la pestaña seleccionada: Texto negro para que sea legible sobre el amarillo */
+    .stTabs [aria-selected="true"] { 
+        background-color: #d4af37 !important; 
+        color: #050505 !important; 
+    }
     .stButton>button { 
         background-color: #d4af37; 
         color: #050505; 
@@ -42,18 +46,14 @@ with st.sidebar:
     st.header("📝 Registro de Alumno")
     nombre_user = st.text_input("Nombre Completo:")
     fecha_inscripcion = st.date_input("Fecha de inicio:", datetime.now())
-    
     st.write("---")
-    
     st.header("🔐 Área del Instructor")
     password = st.text_input("Clave Maestra:", type="password")
     
-    # Identidad del Maestro Vrolok
     es_instructor = (password == "anubis2026")
     
     if es_instructor:
         st.success("Acceso Maestro Activo")
-        # El botón vuelve a estar aquí, en la izquierda, como lo prefieres
         st.link_button("📂 Abrir Presentación Maestra", "https://docs.google.com/presentation/d/1dO3YrrZYeU4uNyeJEsMKxhjCSlC_P0GDpVcJr9w5m2Q/edit")
 
 # --- LÓGICA DE VISUALIZACIÓN ---
@@ -68,12 +68,16 @@ if nombre_user or es_instructor:
         dias_pasados = (hoy - fecha_inscripcion).days
         st.success(f"Bienvenido/a a El Templo de Anubis, {nombre_user}")
 
-    tab1, tab2, tab3 = st.tabs(["Tarot de Marsella", "Runas Vikingas", "Wicca & Magia"])
+    # Agregamos una pestaña de "Inicio" para que no se abra Tarot de inmediato
+    tab_home, tab1, tab2, tab3 = st.tabs(["🏛 Inicio", "Tarot de Marsella", "Runas Vikingas", "Wicca & Magia"])
+
+    with tab_home:
+        st.subheader("Bienvenido al Santuario del Conocimiento")
+        st.write("Selecciona uno de los módulos superiores para comenzar tu formación.")
+        st.write("Recuerda que los materiales se liberan conforme avanza tu tiempo de estudio.")
 
     with tab1:
         st.subheader("Módulo: Tarot de Marsella")
-        
-        # Orden solicitado: Clase 1 (Introducción), Clase 2 (Mazo)
         materiales = [
             {"titulo": "Clase 1", "url": "https://drive.google.com/file/d/159pd32ErBY5ivTRUhZoY-sHxstGc9puB/view", "dia": 0},
             {"titulo": "Clase 2", "url": "https://drive.google.com/file/d/1FOcbDLocK2i6xf_FH-APCF2GvM7iZwY5/view", "dia": 7},
