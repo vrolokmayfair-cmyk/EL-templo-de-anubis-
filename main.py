@@ -4,13 +4,72 @@ from datetime import datetime
 # 1. Configuración de la plataforma
 st.set_page_config(page_title="El Templo de Anubis", layout="wide")
 
-# Estilo personalizado para una atmósfera mística
+# Estilo CSS Avanzado para fondo negro y letras doradas
 st.markdown("""
     <style>
-    .main { background-color: #1a1a1a; color: #d4af37; }
-    .stTabs [data-baseweb="tab-list"] { gap: 24px; }
-    .stTabs [data-baseweb="tab"] { height: 50px; background-color: #262626; border-radius: 5px; color: #d4af37; }
-    .stButton>button { background-color: #4a148c; color: white; border-radius: 10px; width: 100%; }
+    /* Fondo principal y textos generales */
+    .stApp {
+        background-color: #050505;
+        color: #d4af37;
+    }
+    
+    /* Títulos y subtítulos */
+    h1, h2, h3, p, span, label {
+        color: #d4af37 !important;
+        font-family: 'Cinzel', serif;
+    }
+
+    /* Barra lateral (Sidebar) */
+    [data-testid="stSidebar"] {
+        background-color: #0a0a0a;
+        border-right: 1px solid #d4af37;
+    }
+    
+    /* Inputs y campos de texto */
+    .stTextInput>div>div>input, .stDateInput>div>div>input {
+        background-color: #1a1a1a;
+        color: #d4af37 !important;
+        border: 1px solid #d4af37;
+    }
+
+    /* Pestañas (Tabs) */
+    .stTabs [data-baseweb="tab-list"] {
+        background-color: #050505;
+        gap: 10px;
+    }
+    .stTabs [data-baseweb="tab"] {
+        background-color: #1a1a1a;
+        border: 1px solid #d4af37;
+        border-radius: 5px 5px 0 0;
+        color: #d4af37 !important;
+        padding: 10px 20px;
+    }
+    .stTabs [aria-selected="true"] {
+        background-color: #d4af37 !important;
+        color: #050505 !important;
+    }
+
+    /* Botones */
+    .stButton>button {
+        background-color: #d4af37;
+        color: #050505;
+        border-radius: 5px;
+        font-weight: bold;
+        border: none;
+        transition: 0.3s;
+    }
+    .stButton>button:hover {
+        background-color: #f5f5dc;
+        color: #000;
+        box-shadow: 0 0 15px #d4af37;
+    }
+    
+    /* Alertas y mensajes */
+    .stAlert {
+        background-color: #1a1a1a;
+        border: 1px solid #d4af37;
+        color: #d4af37;
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -25,11 +84,10 @@ with st.sidebar:
     
     st.write("---")
     
-    # --- APARTADO PROTEGIDO PARA INSTRUCTOR ---
     st.header("🔐 Área del Instructor")
     password = st.text_input("Clave Maestra:", type="password")
     
-    # Verificación de identidad con el nuevo nombre: Vrolok
+    # Verificación de identidad con Vrolok
     es_instructor = (password == "anubis2026")
     
     if es_instructor:
@@ -39,23 +97,21 @@ with st.sidebar:
 # --- LÓGICA DE VISUALIZACIÓN ---
 if nombre_user or es_instructor:
     
-    # Acceso total si es instructor Vrolok
     if es_instructor:
         dias_pasados = 100 
-        saludo = f"Bienvenido Maestro Vrolok" if not nombre_user else f"Maestro Vrolok operando como: {nombre_user}"
+        saludo = "Bienvenido Maestro Vrolok" if not nombre_user else f"Maestro Vrolok operando como: {nombre_user}"
         st.info(saludo)
     else:
         hoy = datetime.now().date()
         dias_pasados = (hoy - fecha_inscripcion).days
         st.success(f"Bienvenido/a a El Templo de Anubis, {nombre_user}")
 
-    # Pestañas de Cursos
     tab1, tab2, tab3 = st.tabs(["Tarot de Marsella", "Runas Vikingas", "Wicca & Magia"])
 
     with tab1:
         st.subheader("Módulo: Tarot de Marsella")
         
-        # Lista de materiales con títulos simplificados y orden corregido
+        # Orden corregido: Clase 1 (Introducción), Clase 2 (Mazo)
         materiales = [
             {"titulo": "Clase 1", "url": "https://drive.google.com/file/d/159pd32ErBY5ivTRUhZoY-sHxstGc9puB/view", "dia": 0},
             {"titulo": "Clase 2", "url": "https://drive.google.com/file/d/1FOcbDLocK2i6xf_FH-APCF2GvM7iZwY5/view", "dia": 7},
