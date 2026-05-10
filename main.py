@@ -11,7 +11,7 @@ st.markdown("""
     h1, h2, h3, p, span, label { color: #d4af37 !important; font-family: 'Cinzel', serif; }
     [data-testid="stSidebar"] { background-color: #0a0a0a; border-right: 1px solid #d4af37; }
     
-    /* Corregir visibilidad de inputs */
+    /* Inputs */
     .stTextInput>div>div>input, .stDateInput>div>div>input { 
         background-color: #1a1a1a; 
         color: #d4af37 !important; 
@@ -26,7 +26,8 @@ st.markdown("""
         border-radius: 5px 5px 0 0; 
         color: #d4af37 !important; 
     }
-    /* Texto negro cuando la pestaña está seleccionada para que se lea sobre el amarillo */
+    
+    /* SOLUCIÓN AL BOTÓN AMARILLO: Texto negro sobre fondo dorado cuando se selecciona */
     .stTabs [aria-selected="true"] { 
         background-color: #d4af37 !important; 
         color: #050505 !important; 
@@ -41,15 +42,19 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- PORTADA PRINCIPAL (SIEMPRE VISIBLE) ---
+# --- PORTADA PRINCIPAL (Visible desde el inicio) ---
 st.title("🌙 El Templo de Anubis")
 
-# Imagen de portada con enlace corregido para visualización directa
-# Si la imagen sigue sin verse, es posible que el archivo en Drive no sea "Público para cualquier persona con el enlace"
+# Enlace de imagen con "export=view" para forzar la carga
 img_id = "1w5HrhaJ2zTry18aSflGsDxTv-ianMTEC"
 direct_link = f"https://drive.google.com/uc?export=view&id={img_id}"
 
-st.image(direct_link, use_container_width=True)
+# Usamos un contenedor para la imagen
+try:
+    st.image(direct_link, use_container_width=True)
+except:
+    st.error("La imagen de portada está en proceso de carga desde el Santuario (Drive).")
+
 st.write("---")
 
 # --- BARRA LATERAL ---
@@ -61,6 +66,7 @@ with st.sidebar:
     st.header("🔐 Área del Instructor")
     password = st.text_input("Clave Maestra:", type="password")
     
+    # Acceso Maestro Vrolok
     es_instructor = (password == "anubis2026")
     
     if es_instructor:
@@ -72,18 +78,19 @@ if nombre_user or es_instructor:
     
     if es_instructor:
         dias_pasados = 100 
-        st.info(f"Bienvenido Maestro Vrolok")
+        st.info("Bienvenido Maestro Vrolok")
     else:
         hoy = datetime.now().date()
         dias_pasados = (hoy - fecha_inscripcion).days
         st.success(f"Bienvenido/a, {nombre_user}")
 
-    # Pestañas: "🏛 Inicio" es la primera para que no se abra Tarot de inmediato
+    # Pestañas de contenido: Iniciamos en la pestaña de bienvenida para evitar el despliegue inmediato de clases
     tab_home, tab1, tab2, tab3 = st.tabs(["🏛 Inicio", "Tarot de Marsella", "Runas Vikingas", "Wicca & Magia"])
 
     with tab_home:
         st.subheader("Santuario del Conocimiento")
-        st.write("Selecciona una pestaña superior para acceder a tus lecciones.")
+        st.write("Selecciona una de las pestañas superiores para comenzar tu formación.")
+        st.write("El conocimiento se revelará ante ti conforme avance tu tiempo en el Templo.")
 
     with tab1:
         st.subheader("Módulo: Tarot de Marsella")
@@ -106,4 +113,4 @@ if nombre_user or es_instructor:
     with tab3: st.info("Próximamente: Materiales de Wicca y Magia.")
 
 else:
-    st.info("👈 Por favor, identifícate en el panel de la izquierda para entrar al Templo.")
+    st.warning("👈 Por favor, identifícate en el panel de la izquierda para entrar al Templo.")
