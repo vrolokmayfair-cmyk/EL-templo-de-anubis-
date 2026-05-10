@@ -10,11 +10,15 @@ st.markdown("""
     .stApp { background-color: #050505; color: #d4af37; }
     h1, h2, h3, p, span, label { color: #d4af37 !important; font-family: 'Cinzel', serif; }
     [data-testid="stSidebar"] { background-color: #0a0a0a; border-right: 1px solid #d4af37; }
+    
+    /* Corregir visibilidad de inputs */
     .stTextInput>div>div>input, .stDateInput>div>div>input { 
         background-color: #1a1a1a; 
         color: #d4af37 !important; 
         border: 1px solid #d4af37; 
     }
+
+    /* Pestañas */
     .stTabs [data-baseweb="tab-list"] { background-color: #050505; gap: 10px; }
     .stTabs [data-baseweb="tab"] { 
         background-color: #1a1a1a; 
@@ -22,28 +26,30 @@ st.markdown("""
         border-radius: 5px 5px 0 0; 
         color: #d4af37 !important; 
     }
+    /* Texto negro cuando la pestaña está seleccionada para que se lea sobre el amarillo */
     .stTabs [aria-selected="true"] { 
         background-color: #d4af37 !important; 
         color: #050505 !important; 
     }
+    
     .stButton>button { 
         background-color: #d4af37; 
         color: #050505; 
         border-radius: 5px; 
         font-weight: bold; 
-        border: none; 
     }
-    .stButton>button:hover { background-color: #f5f5dc; box-shadow: 0 0 15px #d4af37; }
     </style>
     """, unsafe_allow_html=True)
 
-# --- PORTADA FIJA (Visible antes y después de iniciar sesión) ---
+# --- PORTADA PRINCIPAL (SIEMPRE VISIBLE) ---
 st.title("🌙 El Templo de Anubis")
 
-# Enlace directo de la imagen de portada
-img_url = "https://drive.google.com/uc?id=1w5HrhaJ2zTry18aSflGsDxTv-ianMTEC"
-st.image(img_url, use_container_width=True)
+# Imagen de portada con enlace corregido para visualización directa
+# Si la imagen sigue sin verse, es posible que el archivo en Drive no sea "Público para cualquier persona con el enlace"
+img_id = "1w5HrhaJ2zTry18aSflGsDxTv-ianMTEC"
+direct_link = f"https://drive.google.com/uc?export=view&id={img_id}"
 
+st.image(direct_link, use_container_width=True)
 st.write("---")
 
 # --- BARRA LATERAL ---
@@ -61,24 +67,22 @@ with st.sidebar:
         st.success("Acceso Maestro Activo")
         st.link_button("📂 Abrir Presentación Maestra", "https://docs.google.com/presentation/d/1dO3YrrZYeU4uNyeJEsMKxhjCSlC_P0GDpVcJr9w5m2Q/edit")
 
-# --- LÓGICA DE VISUALIZACIÓN ---
+# --- LÓGICA DE CONTENIDO ---
 if nombre_user or es_instructor:
     
     if es_instructor:
         dias_pasados = 100 
-        saludo = "Bienvenido Maestro Vrolok" if not nombre_user else f"Maestro Vrolok operando como: {nombre_user}"
-        st.info(saludo)
+        st.info(f"Bienvenido Maestro Vrolok")
     else:
         hoy = datetime.now().date()
         dias_pasados = (hoy - fecha_inscripcion).days
-        st.success(f"Bienvenido/a a El Templo de Anubis, {nombre_user}")
+        st.success(f"Bienvenido/a, {nombre_user}")
 
-    # Pestañas de contenido
+    # Pestañas: "🏛 Inicio" es la primera para que no se abra Tarot de inmediato
     tab_home, tab1, tab2, tab3 = st.tabs(["🏛 Inicio", "Tarot de Marsella", "Runas Vikingas", "Wicca & Magia"])
 
     with tab_home:
         st.subheader("Santuario del Conocimiento")
-        st.write("Explora los misterios antiguos a través de nuestros módulos de formación académica.")
         st.write("Selecciona una pestaña superior para acceder a tus lecciones.")
 
     with tab1:
@@ -102,5 +106,4 @@ if nombre_user or es_instructor:
     with tab3: st.info("Próximamente: Materiales de Wicca y Magia.")
 
 else:
-    # Mensaje visible cuando NO han iniciado sesión
-    st.info("👈 El acceso al conocimiento requiere identificación. Por favor, regístrate en la barra lateral.")
+    st.info("👈 Por favor, identifícate en el panel de la izquierda para entrar al Templo.")
