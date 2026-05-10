@@ -1,11 +1,9 @@
 import streamlit as st
-from streamlit_gsheets import GSheetsConnection
-import pandas as pd
 from datetime import datetime
 
-st.set_page_config(page_title="Academia Mística", layout="wide")
+# Configuración estética
+st.set_page_config(page_title="Academia Mística - Anubis", layout="wide")
 
-# Estilos visuales
 st.markdown("""
     <style>
     .main { background-color: #1a1a1a; color: #d4af37; }
@@ -15,47 +13,51 @@ st.markdown("""
     """, unsafe_allow_stdio=True)
 
 st.title("🌙 Academia de Tarot, Runas y Wicca")
+st.write("---")
 
-# Conexión con el enlace proporcionado
-conn = st.connection("gsheets", type=GSheetsConnection)
-df = conn.read()
-df['Apellidos'] = df['Apellidos'].astype(str).str.strip().str.upper()
+# --- REGISTRO DE ALUMNO ---
+with st.sidebar:
+    st.header("📝 Registro de Alumno")
+    nombre = st.text_input("Nombre Completo:")
+    fecha_inscripcion = st.date_input("¿Qué día te inscribiste?", datetime.now())
+    st.info("Nota: Los materiales se liberarán automáticamente cada 7 días a partir de esta fecha.")
 
-# Panel Administrativo
-with st.expander("🔑 Acceso Administrativo"):
-    st.link_button("📂 Abrir Presentación Maestra (Tarot)", "https://docs.google.com/presentation/d/1dO3YrrZYeU4uNyeJEsMKxhjCSlC_P0GDpVcJr9w5m2Q/edit")
-    st.link_button("📊 Gestionar Alumnos (Sheets)", "https://docs.google.com/spreadsheets/d/1ii4x21yt0uqc3CQgwoiolxZLM5kzHJLzOSCCNtErzK8/edit")
+if nombre:
+    # Cálculo de días transcurridos
+    hoy = datetime.now().date()
+    dias_pasados = (hoy - fecha_inscripcion).days
 
-# Acceso de Alumno
-apellido_user = st.text_input("Ingresa tus Apellidos para entrar:").strip().upper()
-
-if apellido_user:
-    alumno = df[df['Apellidos'] == apellido_user]
+    st.success(f"Bienvenido/a a tu portal, {nombre}")
     
-    if not alumno.empty:
-        nombre = alumno.iloc[0]['Nombre(s)']
-        fecha_inicio = pd.to_datetime(alumno.iloc[0]['Fecha de Inicio'])
-        dias_pasados = (datetime.now() - fecha_inicio).days
-        
-        st.success(f"Bienvenido/a, {nombre}")
-        
-        tab1, tab2, tab3 = st.tabs(["Tarot de Marsella", "Runas Vikingas", "Wicca & Magia"])
+    tab1, tab2, tab3 = st.tabs(["Tarot de Marsella", "Runas Vikingas", "Wicca & Magia"])
 
-        with tab1:
-            st.subheader("Módulo 1: Tarot (10 Clases)")
-            materiales = [
-                {"n": "Material para la clase 1", "u": "https://drive.google.com/file/d/159pd32ErBY5ivTRUhZoY-sHxstGc9puB/view", "d": 0},
-                {"n": "Material para la clase 2", "u": "https://drive.google.com/file/d/1FOcbDLocK2i6xf_FH-APCF2GvM7iZwY5/view", "d": 7},
-                {"n": "Material para la clase de tiradas", "u": "https://drive.google.com/file/d/19nYTrsNW76GI4pLvGddXZlZ4XfMdgFeW/view", "d": 14},
-                {"n": "Material para la clase de arcanos menores", "u": "https://drive.google.com/file/d/1jYaMsGXcIbMYw18GNNqUTbOyidi5UjWa/view", "d": 21}
-            ]
+    with tab1:
+        st.subheader("Módulo 1: Tarot (Liberación Progresiva)")
+        
+        # Lista de materiales
+        materiales = [
+            {"n": "Material para la clase 1", "u": "https://drive.google.com/file/d/159pd32ErBY5ivTRUhZoY-sHxstGc9puB/view", "d": 0},
+            {"n": "Material para la clase 2", "u": "https://drive.google.com/file/d/1FOcbDLocK2i6xf_FH-APCF2GvM7iZwY5/view", "d": 7},
+            {"n": "Material para la clase de tiradas", "u": "https://drive.google.com/file/d/19nYTrsNW76GI4pLvGddXZlZ4XfMdgFeW/view", "d": 14},
+            {"n": "Material para la clase de arcanos menores", "u": "https://drive.google.com/file/d/1jYaMsGXcIbMYw18GNNqUTbOyidi5UjWa/view", "d": 21}
+        ]
 
-            for m in materiales:
-                if dias_pasados >= m["d"]:
-                    st.markdown(f'<div class="clase-box"><h4>{m["n"]}</h4></div>', unsafe_allow_stdio=True)
+        for m in materiales:
+            if dias_pasados >= m["d"]:
+                with st.container():
+                    st.markdown(f'<div class="clase-box"><h4>✅ {m["n"]}</h4></div>', unsafe_allow_stdio=True)
                     st.link_button(f"Descargar {m['n']}", m["u"])
-                else:
-                    st.info(f"🔒 {m['n']} (Disponible en {m['d'] - dias_pasados} días)")
+            else:
+                st.info(f"🔒 {m['n']} (Disponible en {m['d'] - dias_pasados} días)")
 
-    else:
-        st.error("No se encontró el apellido en el registro.")
+    with tab2:
+        st.info("Próximamente materiales de Runas Vikingas.")
+
+    with tab3:
+        st.info("Próximamente materiales de Wicca y Magia Draconiana.")
+else:
+    st.warning("👈 Por favor, regístrate en el panel de la izquierda para ver tus materiales.")
+
+# --- PANEL ADMIN (PARA TI) ---
+with st.expander("🔑 Acceso Administrador"):
+    st.link_button("📂 Presentación Maestra", "https://docs.google.com/presentation/d/1dO3YrrZYeU4uNyeJEsMKxhjCSlC_P0GDpVcJr9w5m2Q/edit")
