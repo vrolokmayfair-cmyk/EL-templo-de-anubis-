@@ -28,9 +28,9 @@ st.markdown("""
     .stTabs [aria-selected="true"] p { color: #000000 !important; }
     .stTabs [aria-selected="true"] { background-color: #d4af37 !important; }
     
-    /* Botones y bloques de comentarios */
+    /* Botones y bloques */
     .stButton>button { background-color: #d4af37; color: #050505; border-radius: 5px; font-weight: bold; border: none; }
-    .wiki-post { background-color: #111111; border: 1px solid #d4af37; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+    .wiki-post { background-color: #111111; border: 1px solid #d4af37; padding: 20px; border-radius: 8px; margin-bottom: 10px; }
     .wiki-comment { background-color: #1a1a1a; border-left: 3px solid #d4af37; padding: 10px; margin-left: 20px; margin-top: 5px; border-radius: 4px; }
     </style>
     """, unsafe_allow_html=True)
@@ -44,7 +44,7 @@ except FileNotFoundError:
 st.title("🌙 El Templo de Anubis")
 st.write("---")
 
-# --- INICIALIZACIÓN DE LA WIKI (Memoria de la App) ---
+# --- INICIALIZACIÓN DE LA WIKI EN SESSION_STATE ---
 if "wiki_posts" not in st.session_state:
     st.session_state.wiki_posts = [
         {
@@ -52,7 +52,7 @@ if "wiki_posts" not in st.session_state:
             "autor": "Maestro Vrolok",
             "titulo": "El Secreto del Loco en el Tarot",
             "contenido": "El Arcano Cero representa el salto cuántico. No tiene número porque es el origen de todas las posibilidades dentro del sendero.",
-            "comentarios": [{"usuario": "Alumno Iniciado", "texto": "Increíble explicación, Maestro. Esto cambia mi perspectiva de la tirada."}]
+            "comentarios": [{"id_com": 1, "usuario": "Alumno Iniciado", "texto": "Increíble explicación, Maestro. Esto cambia mi perspectiva."}]
         }
     ]
 
@@ -78,42 +78,64 @@ if nombre_user or es_instructor:
     
     if es_instructor:
         dias_pasados = 100 
-        st.info("Bienvenido Maestro Vrolok")
+        st.info("Bienvenido Maestro Vrolok - Modo Administrador Activo")
     else:
         hoy = datetime.now().date()
         dias_pasados = (hoy - fecha_inscripcion).days
         st.success(f"Bienvenido/a a El Templo de Anubis, {nombre_user}")
 
-    # Nueva pestaña añadida: "Wiki Comunitaria"
     tab_home, tab1, tab2, tab3, tab_wiki = st.tabs(["🏛 Inicio", "Tarot de Marsella", "Runas Vikingas", "Wicca & Magia", "📜 Wiki Comunitaria"])
 
     with tab_home:
         st.subheader("Santuario del Conocimiento")
         st.write("Selecciona una pestaña superior para acceder a tus lecciones o compartir en la Wiki.")
 
+    # --- LECCIONES CON INSTRUCCIONES ACTUALIZADAS ---
     with tab1:
         st.subheader("Módulo: Tarot de Marsella")
+        
         materiales = [
-            {"titulo": "Clase 1", "url": "https://drive.google.com/file/d/159pd32ErBY5ivTRUhZoY-sHxstGc9puB/view", "dia": 0},
-            {"titulo": "Clase 2", "url": "https://drive.google.com/file/d/1FOcbDLocK2i6xf_FH-APCF2GvM7iZwY5/view", "dia": 7},
-            {"titulo": "Clase de tiradas", "url": "https://drive.google.com/file/d/19nYTrsNW76GI4pLvGddXZlZ4XfMdgFeW/view", "dia": 14},
-            {"titulo": "Clase de arcanos menores", "url": "https://drive.google.com/file/d/1jYaMsGXcIbMYw18GNNqUTbOyidi5UjWa/view", "dia": 21}
+            {
+                "titulo": "Material Clase 1", 
+                "instruccion": "Descarga el material de los arcanos mayores del tarot marsella y colorealos de acuerdo a tu percepcion.",
+                "url": "https://drive.google.com/file/d/159pd32ErBY5ivTRUhZoY-sHxstGc9puB/view", 
+                "dia": 0
+            },
+            {
+                "titulo": "Material Clase 2", 
+                "instruccion": "Descarga el pdf de los arcanos mayores del tarot marsella, ya que se ocuparan en las siguientes clases.",
+                "url": "https://drive.google.com/file/d/1FOcbDLocK2i6xf_FH-APCF2GvM7iZwY5/view", 
+                "dia": 7
+            },
+            {
+                "titulo": "Material Clase 3", 
+                "instruccion": "Descarga el manual de tiradas para tener una amplia gama de opciones en tus lecturas adicionales a las que se te brindaron en clase.",
+                "url": "https://drive.google.com/file/d/19nYTrsNW76GI4pLvGddXZlZ4XfMdgFeW/view", 
+                "dia": 14
+            },
+            {
+                "titulo": "Material Clase de Arcanos Menores", 
+                "instruccion": "El siguiente pdf incluye el tarot marsella completo para su utilizacion de forma personal.",
+                "url": "https://drive.google.com/file/d/1jYaMsGXcIbMYw18GNNqUTbOyidi5UjWa/view", 
+                "dia": 21
+            }
         ]
+        
         for c in materiales:
             if es_instructor or dias_pasados >= c["dia"]:
                 st.write(f"### ✅ {c['titulo']}")
+                st.write(f"ℹ️ *Instrucciones:* {c['instruccion']}")
                 st.link_button(f"Descargar material", c["url"])
                 st.write("---")
             else:
-                st.warning(f"🔒 {c['titulo']} (Disponible en {c['dia'] - dias_pasados} días)")
+                st.warning(f"🔒 {c['titulo']} (Disponible en {c['dia'] - dias_pasados} days)")
 
     with tab2: st.info("Próximamente: Materiales de Runas Vikingas.")
     with tab3: st.info("Próximamente: Materiales de Wicca y Magia.")
 
-    # --- DESARROLLO DEL MÓDULO WIKI ---
+    # --- WIKI CON GESTIÓN ADMINISTRATIVA (ELIMINAR/EDITAR) ---
     with tab_wiki:
         st.subheader("📜 Bitácora de Conocimiento Esotérico")
-        st.write("Un espacio compartido para que los iniciados de El Templo de Anubis publiquen sus reflexiones, dudas y hallazgos.")
         
         # Formulario para nueva publicación
         with st.expander("✍️ Crear Nueva Publicación en la Wiki"):
@@ -121,7 +143,7 @@ if nombre_user or es_instructor:
             contenido_post = st.text_area("¿Qué conocimiento deseas plasmar?")
             if st.button("Publicar en el Templo"):
                 if titulo_post and contenido_post:
-                    nuevo_id = len(st.session_state.wiki_posts) + 1
+                    nuevo_id = max([p["id"] for p in st.session_state.wiki_posts]) + 1 if st.session_state.wiki_posts else 1
                     st.session_state.wiki_posts.append({
                         "id": nuevo_id,
                         "autor": usuario_actual,
@@ -129,44 +151,64 @@ if nombre_user or es_instructor:
                         "contenido": contenido_post,
                         "comentarios": []
                     })
-                    st.success("El conocimiento ha sido grabado en los muros del templo.")
+                    st.success("Publicación guardada con éxito.")
                     st.rerun()
-                else:
-                    st.error("Por favor completa el título y el contenido.")
 
         st.write("### 🏛 Entradas Recientes")
         
-        # Despliegue de publicaciones (desde la más nueva)
-        for post in reversed(st.session_state.wiki_posts):
+        # Iteración de posts
+        for idx, post in enumerate(st.session_state.wiki_posts):
             st.markdown(f"""
             <div class="wiki-post">
                 <h4>✨ {post['titulo']}</h4>
-                <p style='font-size: 14px; opacity: 0.7;'>Por: <b>{post['autor']}</b></p>
-                <p style='font-size: 16px; color: #e0e0e0;'>{post['contenido']}</p>
+                <p style='font-size: 13px; opacity: 0.7; margin:0;'>Por: <b>{post['autor']}</b></p>
+                <p style='font-size: 15px; color: #e0e0e0; margin-top:10px;'>{post['contenido']}</p>
             </div>
             """, unsafe_allow_html=True)
             
-            # Mostrar comentarios existentes
+            # --- Panel de Moderación del Instructor (Para el Post) ---
+            if es_instructor:
+                col_edit, col_del, _ = st.columns([1, 1, 4])
+                with col_edit:
+                    with st.popover("✏️ Editar Post"):
+                        nuevo_tit = st.text_input("Editar Título", post['titulo'], key=f"edit_t_{post['id']}")
+                        nuevo_cont = st.text_area("Editar Contenido", post['contenido'], key=f"edit_c_{post['id']}")
+                        if st.button("Guardar Cambios", key=f"save_{post['id']}"):
+                            post['titulo'] = nuevo_tit
+                            post['contenido'] = nuevo_cont
+                            st.success("Post actualizado.")
+                            st.rerun()
+                with col_del:
+                    if st.button("🗑️ Eliminar Post", key=f"del_{post['id']}"):
+                        st.session_state.wiki_posts.pop(idx)
+                        st.warning("Publicación eliminada por el Administrador.")
+                        st.rerun()
+
+            # Mostrar comentarios
             if post["comentarios"]:
-                st.write("💬 *Comentarios de los iniciados:*")
-                for c in post["comentarios"]:
+                st.write("💬 *Comentarios:*")
+                for c_idx, c in enumerate(post["comentarios"]):
                     st.markdown(f"""
                     <div class="wiki-comment">
-                        <p style='font-size: 14px; margin-bottom: 2px;'><b>{c['usuario']}:</b> {c['texto']}</p>
+                        <p style='font-size: 14px; margin: 0;'><b>{c['usuario']}:</b> {c['texto']}</p>
                     </div>
                     """, unsafe_allow_html=True)
+                    
+                    # --- Moderación de comentarios (Instructor) ---
+                    if es_instructor:
+                        if st.button("❌ Eliminar comentario", key=f"del_c_{post['id']}_{c_idx}"):
+                            post["comentarios"].pop(c_idx)
+                            st.rerun()
             
-            # Formulario para añadir comentario (con llave única basada en ID)
-            nuevo_comentario = st.text_input(f"Añadir comentario a '{post['titulo']}':", key=f"input_{post['id']}")
+            # Añadir comentario nuevo
+            nuevo_comentario = st.text_input(f"Responder a '{post['titulo']}':", key=f"input_{post['id']}")
             if st.button("Comentar", key=f"btn_{post['id']}"):
                 if nuevo_comentario:
                     post["comentarios"].append({
                         "usuario": usuario_actual,
                         "texto": nuevo_comentario
                     })
-                    st.success("Comentario añadido.")
                     st.rerun()
             st.write("---")
-
 else:
     st.warning("👈 Por favor, identifícate en el panel de la izquierda para entrar al Templo.")
