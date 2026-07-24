@@ -43,8 +43,8 @@ st.markdown("""
 # --- PORTADA PRINCIPAL ---
 try:
     st.image("anubis-the-ancient-egyptian-jackal-headed-god-seat.jpeg", use_container_width=True)
-except FileNotFoundError:
-    st.error("Cargando imagen desde el repositorio del Templo...")
+except Exception:
+    st.info("🌙 El Templo de Anubis — Cuestionario y Plataforma de Estudio")
 
 st.title("🌙 El Templo de Anubis")
 st.write("---")
@@ -74,7 +74,7 @@ with st.sidebar:
     
     if es_instructor:
         st.success("Acceso Maestro Activo")
-        st.link_button("📂 Abrir Presentación Maestra", "https://docs.google.com/presentation/d/1dO3YrrZYeU4uNyeJEsMKxhjCSlC_P0GDpVcJr9w5m2Q/edit")
+        st.link_button("📂 Abrir Presentación Maestra", "[https://docs.google.com/presentation/d/1dO3YrrZYeU4uNyeJEsMKxhjCSlC_P0GDpVcJr9w5m2Q/edit](https://docs.google.com/presentation/d/1dO3YrrZYeU4uNyeJEsMKxhjCSlC_P0GDpVcJr9w5m2Q/edit)")
 
 # --- LÓGICA DE CONTENIDO ---
 if nombre_user or es_instructor:
@@ -110,25 +110,25 @@ if nombre_user or es_instructor:
             {
                 "titulo": "Material Clase 1", 
                 "instruccion": "Descarga el material de los arcanos mayores del tarot marsella y colorealos de acuerdo a tu percepcion.",
-                "url": "https://drive.google.com/file/d/159pd32ErBY5ivTRUhZoY-sHxstGc9puB/view", 
+                "url": "[https://drive.google.com/file/d/159pd32ErBY5ivTRUhZoY-sHxstGc9puB/view](https://drive.google.com/file/d/159pd32ErBY5ivTRUhZoY-sHxstGc9puB/view)", 
                 "dia": 0
             },
             {
                 "titulo": "Material Clase 2", 
                 "instruccion": "Descarga el pdf de los arcanos mayores del tarot marsella, ya que se ocuparan en las siguientes clases.",
-                "url": "https://drive.google.com/file/d/1FOcbDLocK2i6xf_FH-APCF2GvM7iZwY5/view", 
+                "url": "[https://drive.google.com/file/d/1FOcbDLocK2i6xf_FH-APCF2GvM7iZwY5/view](https://drive.google.com/file/d/1FOcbDLocK2i6xf_FH-APCF2GvM7iZwY5/view)", 
                 "dia": 7
             },
             {
                 "titulo": "Material Clase 3", 
                 "instruccion": "Descarga el manual de tiradas para tener una amplia gama de opciones en tus lecturas adicionales a las que se te brindaron en clase.",
-                "url": "https://drive.google.com/file/d/19nYTrsNW76GI4pLvGddXZlZ4XfMdgFeW/view", 
+                "url": "[https://drive.google.com/file/d/19nYTrsNW76GI4pLvGddXZlZ4XfMdgFeW/view](https://drive.google.com/file/d/19nYTrsNW76GI4pLvGddXZlZ4XfMdgFeW/view)", 
                 "dia": 14
             },
             {
                 "titulo": "Material Clase de Arcanos Menores", 
                 "instruccion": "El siguiente pdf incluye el tarot marsella completo para su utilizacion de forma personal.",
-                "url": "https://drive.google.com/file/d/1jYaMsGXcIbMYw18GNNqUTbOyidi5UjWa/view", 
+                "url": "[https://drive.google.com/file/d/1jYaMsGXcIbMYw18GNNqUTbOyidi5UjWa/view](https://drive.google.com/file/d/1jYaMsGXcIbMYw18GNNqUTbOyidi5UjWa/view)", 
                 "dia": 21
             }
         ]
@@ -189,16 +189,16 @@ if nombre_user or es_instructor:
             if es_instructor:
                 st.markdown("<span class='teacher-badge'>MODO EVALUADOR ACTIVO</span>", unsafe_allow_html=True)
                 nombre_evaluado = st.text_input("Nombre del Participante Evaluado:", placeholder="Ej. Juan Pérez")
-                fecha_eval = st.date_input("Fecha de Evaluación:", datetime.now())
+                fecha_eval = st.date_input("Fecha de Evaluación:", datetime.now(), key="fech_eval_m")
                 
                 col_obs1, col_obs2 = st.columns(2)
                 with col_obs1:
-                    i1 = st.slider("1. Identifica correctamente la dirección de la mirada y su significado temporal", 0, 10, 8)
-                    i2 = st.slider("2. Analiza el color dominante y su relación con el plano de la consulta", 0, 10, 8)
-                    i3 = st.slider("3. Reconoce el septenario al que pertenecen las cartas y su plano (Material/Mental/Espiritual)", 0, 10, 8)
+                    i1 = st.slider("1. Identifica correctamente la dirección de la mirada y su significado temporal", 0, 10, 8, key="sl_1")
+                    i2 = st.slider("2. Analiza el color dominante y su relación con el plano de la consulta", 0, 10, 8, key="sl_2")
+                    i3 = st.slider("3. Reconoce el septenario al que pertenecen las cartas y su plano (Material/Mental/Espiritual)", 0, 10, 8, key="sl_3")
                 with col_obs2:
-                    i4 = st.slider("4. Describe correctamente postura, manos y elementos clave de cada arcano", 0, 10, 8)
-                    i5 = st.slider("5. Integra los arquetipos en una narrativa coherente y hermenéutica", 0, 10, 8)
+                    i4 = st.slider("4. Describe correctamente postura, manos y elementos clave de cada arcano", 0, 10, 8, key="sl_4")
+                    i5 = st.slider("5. Integra los arquetipos en una narrativa coherente y hermenéutica", 0, 10, 8, key="sl_5")
                 
                 total_obs_pts = i1 + i2 + i3 + i4 + i5
                 porcentaje_obs = total_obs_pts * 2
@@ -209,7 +209,7 @@ if nombre_user or es_instructor:
                 st.metric("Ponderación Formativa Final (40% máx):", f"{peso_final_obs:.1f}% / 40%")
                 
                 obs_comments = st.text_area("Comentarios del Facilitador:", placeholder="Anota aquí las fortalezas y áreas de mejora del participante...")
-                if st.button("Guardar Evaluación Práctica"):
+                if st.button("Guardar Evaluación Práctica", key="btn_save_prac"):
                     st.success(f"Evaluación de {nombre_evaluado} guardada exitosamente con {peso_final_obs:.1f}% / 40%.")
             else:
                 st.info("ℹ️ Esta sección es utilizada por el **Maestro Vrolok** durante tu práctica en vivo de 3 cartas.")
@@ -246,13 +246,13 @@ if nombre_user or es_instructor:
                             ["a) La Templanza", "b) La Muerte (Arcano XIII)", "c) La Estrella"], index=None, key="qf5")
 
             st.markdown("#### **Parte II – Preguntas Abiertas Cortas (60 puntos)**")
-            qa1 = st.text_area("1. Explica el significado de las manos ocultas en la iconografía marsellesa:")
-            qa2 = st.text_area("2. Describe el significado de El Carro (VII) y su relación con el dominio de opuestos:")
-            qa3 = st.text_area("3. ¿Cómo se interpreta la dominancia de color rojo en una tirada?")
-            qa4 = st.text_area("4. Explica la estructura de los tres septenarios y qué plano de conciencia representa cada uno:")
-            qa5 = st.text_area("5. Analiza el arcano 'La Estrella' (XVII) según simbolismo, color y arquetipo:")
+            qa1 = st.text_area("1. Explica el significado de las manos ocultas en la iconografía marsellesa:", key="qa1_k")
+            qa2 = st.text_area("2. Describe el significado de El Carro (VII) y su relación con el dominio de opuestos:", key="qa2_k")
+            qa3 = st.text_area("3. ¿Cómo se interpreta la dominancia de color rojo en una tirada?", key="qa3_k")
+            qa4 = st.text_area("4. Explica la estructura de los tres septenarios y qué plano de conciencia representa cada uno:", key="qa4_k")
+            qa5 = st.text_area("5. Analiza el arcano 'La Estrella' (XVII) según simbolismo, color y arquetipo:", key="qa5_k")
 
-            if st.button("Enviar Examen Sumativo Final"):
+            if st.button("Enviar Examen Sumativo Final", key="btn_sub_final"):
                 pts_op = 0
                 if q_f1 == "b) Recepción, espiritualidad e introspección": pts_op += 8
                 if q_f2 == "b) Futuro y acción": pts_op += 8
@@ -267,7 +267,7 @@ if nombre_user or es_instructor:
         with eval_sub4:
             st.markdown("### 🔑 Clave Completa de Respuestas (Para el Facilitador)")
             
-            if es_instructor or st.checkbox("Mostrar Claves Oficiales y Criterios de Evaluación"):
+            if es_instructor or st.checkbox("Mostrar Claves Oficiales y Criterios de Evaluación", key="chk_claves"):
                 st.markdown("""
                 <div class="feedback-box">
                     <h4>🩺 Clave de la Evaluación Diagnóstica:</h4>
@@ -313,9 +313,9 @@ if nombre_user or es_instructor:
         st.subheader("📜 Bitácora de Conocimiento Esotérico")
         
         with st.expander("✍️ Crear Nueva Publicación en la Wiki"):
-            titulo_post = st.text_input("Título de la publicación:")
-            contenido_post = st.text_area("¿Qué conocimiento deseas plasmar?")
-            if st.button("Publicar en el Templo"):
+            titulo_post = st.text_input("Título de la publicación:", key="w_tit_new")
+            contenido_post = st.text_area("¿Qué conocimiento deseas plasmar?:", key="w_cont_new")
+            if st.button("Publicar en el Templo", key="btn_w_new"):
                 if titulo_post and contenido_post:
                     nuevo_id = max([p["id"] for p in st.session_state.wiki_posts]) + 1 if st.session_state.wiki_posts else 1
                     st.session_state.wiki_posts.append({
@@ -342,7 +342,7 @@ if nombre_user or es_instructor:
             if es_instructor:
                 col_edit, col_del, _ = st.columns([1, 1, 4])
                 with col_edit:
-                    with st.popover("✏️ Editar Post"):
+                    with st.popover("✏️ Editar Post", key=f"popover_{post['id']}"):
                         nuevo_tit = st.text_input("Editar Título", post['titulo'], key=f"edit_t_{post['id']}")
                         nuevo_cont = st.text_area("Editar Contenido", post['contenido'], key=f"edit_c_{post['id']}")
                         if st.button("Guardar Cambios", key=f"save_{post['id']}"):
@@ -381,9 +381,3 @@ if nombre_user or es_instructor:
             st.write("---")
 else:
     st.warning("👈 Por favor, identifícate en el panel de la izquierda para entrar al Templo.")
-
-### Cambios y Correcciones realizadas:
-- **Corrección de sintaxis:** Se removieron los espacios de no separación (`\xa0`) que provocaban errores de compilación en el servidor de Streamlit.
-- **Modulo del Maestro (Guía de Observación 40%):** Se añadió una consola interactiva de evaluación donde el instructor puede seleccionar al alumno, utilizar barras deslizantes (sliders) para calificar los 5 ítems de la práctica de 3 cartas y guardar los comentarios pedagógicos.
-- **Examen Sumativo Completo:** Se dividió correctamente entre la Parte I de opción múltiple y la Parte II de preguntas abiertas cortas.
-- **Pestaña de Claves:** Incluye de forma organizada y desplegable todas las respuestas de la evaluación diagnóstica, examen sumativo y criterios del facilitador.
