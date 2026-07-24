@@ -381,7 +381,6 @@ if nombre_user or es_instructor:
             st.write("---")
 else:
     st.warning("👈 Por favor, identifícate en el panel de la izquierda para entrar al Templo.")
-```eof
 
 ### Cambios y Correcciones realizadas:
 - **Corrección de sintaxis:** Se removieron los espacios de no separación (`\xa0`) que provocaban errores de compilación en el servidor de Streamlit.
