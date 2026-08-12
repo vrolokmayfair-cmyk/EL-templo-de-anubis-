@@ -1,5 +1,6 @@
 import streamlit as st
 from datetime import datetime
+import pandas as pd
 
 # 1. Configuración de la plataforma
 st.set_page_config(page_title="El Templo de Anubis", page_icon="🌙", layout="wide")
@@ -49,7 +50,7 @@ except Exception:
 st.title("🌙 El Templo de Anubis")
 st.write("---")
 
-# --- INICIALIZACIÓN DE LA WIKI EN SESSION_STATE ---
+# --- INICIALIZACIÓN DE VARIABLES EN SESSION_STATE ---
 if "wiki_posts" not in st.session_state:
     st.session_state.wiki_posts = [
         {
@@ -60,6 +61,15 @@ if "wiki_posts" not in st.session_state:
             "comentarios": [{"id_com": 1, "usuario": "Alumno Iniciado", "texto": "Increíble explicación, Maestro. Esto cambia mi perspectiva."}]
         }
     ]
+
+if "diag_results" not in st.session_state:
+    st.session_state.diag_results = []
+
+if "prac_results" not in st.session_state:
+    st.session_state.prac_results = []
+
+if "final_results" not in st.session_state:
+    st.session_state.final_results = []
 
 # --- BARRA LATERAL ---
 with st.sidebar:
@@ -282,11 +292,12 @@ if nombre_user or es_instructor:
         st.subheader("📊 Sistema Oficial de Evaluaciones de Competencias")
         st.write("Instrumentos pedagógicos para medir el aprendizaje teórico y práctico en el Templo de Anubis.")
 
-        eval_sub1, eval_sub2, eval_sub3, eval_sub4 = st.tabs([
+        eval_sub1, eval_sub2, eval_sub3, eval_sub4, eval_sub5 = st.tabs([
             "🩺 1. Evaluación Diagnóstica",
             "📋 2. Guía de Observación (40%)",
             "📝 3. Evaluación Final (60%)",
-            "🔑 4. Clave del Facilitador"
+            "🔑 4. Clave del Facilitador",
+            "📥 5. Descarga de Calificaciones (Admin)"
         ])
 
         # 1. EVALUACIÓN DIAGNÓSTICA (10 Preguntas)
@@ -311,7 +322,22 @@ if nombre_user or es_instructor:
                 
                 sub_diag = st.form_submit_button("Enviar Evaluación Diagnóstica")
                 if sub_diag:
-                    st.success("✅ Evaluación Diagnóstica enviada correctamente. Consulta la retroalimentación en la pestaña 'Clave del Facilitador'.")
+                    registro_diag = {
+                        "Fecha": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                        "Alumno": usuario_actual,
+                        "Q1_ArcanosMayores": qd1,
+                        "Q2_Elementos": qd2,
+                        "Q3_MiradaIzquierda": qd3,
+                        "Q4_Colores": qd4,
+                        "Q5_ElLoco": qd5,
+                        "Q6_SedentesVsPie": qd6,
+                        "Q7_ManoDerecha": qd7,
+                        "Q8_LaJusticia": qd8,
+                        "Q9_CodigoCromatico": qd9,
+                        "Q10_ObjetivoCurso": qd10
+                    }
+                    st.session_state.diag_results.append(registro_diag)
+                    st.success("✅ Evaluación Diagnóstica enviada y guardada correctamente. Puedes consultar la retroalimentación en la pestaña 'Clave del Facilitador'.")
 
         # 2. GUÍA DE OBSERVACIÓN (FORMATIVA - 40%) - MÓDULO DEL MAESTRO
         with eval_sub2:
@@ -342,6 +368,20 @@ if nombre_user or es_instructor:
                 
                 obs_comments = st.text_area("Comentarios del Facilitador:", placeholder="Anota aquí las fortalezas y áreas de mejora del participante...", key="m_obs_comm")
                 if st.button("Guardar Evaluación Práctica", key="btn_save_prac"):
+                    registro_prac = {
+                        "Fecha": fecha_eval.strftime("%Y-%m-%d"),
+                        "Alumno": nombre_evaluado if nombre_evaluado else "Sin Nombre",
+                        "Item1_Mirada": i1,
+                        "Item2_Color": i2,
+                        "Item3_Septenario": i3,
+                        "Item4_Anatomia": i4,
+                        "Item5_Narrativa": i5,
+                        "Total_Puntos_50": total_obs_pts,
+                        "Porcentaje": f"{porcentaje_obs}%",
+                        "Peso_Formativo_40": f"{peso_final_obs:.1f}%",
+                        "Comentarios": obs_comments
+                    }
+                    st.session_state.prac_results.append(registro_prac)
                     st.success(f"Evaluación de {nombre_evaluado} guardada exitosamente con {peso_final_obs:.1f}% / 40%.")
             else:
                 st.info("ℹ️ Esta sección es utilizada por el **Maestro Vrolok** durante tu práctica en vivo de 3 cartas.")
@@ -392,7 +432,24 @@ if nombre_user or es_instructor:
                 if q_f4 == "b) Estabilidad y poder establecido": pts_op += 8
                 if q_f5 == "b) La Muerte (Arcano XIII)": pts_op += 8
                 
-                st.success(f"Examen entregado. Calificación automática Parte I (Opción múltiple): {pts_op} / 40 pts.")
+                registro_final = {
+                    "Fecha": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                    "Alumno": usuario_actual,
+                    "Pts_OpcionMultiple_40": pts_op,
+                    "Q1_Azul": q_f1,
+                    "Q2_Derecha": q_f2,
+                    "Q3_Diablo": q_f3,
+                    "Q4_Sedente": q_f4,
+                    "Q5_Muerte": q_f5,
+                    "QA1_ManosOcultas": qa1,
+                    "QA2_ElCarro": qa2,
+                    "QA3_DominanciaRojo": qa3,
+                    "QA4_TresSeptenarios": qa4,
+                    "QA5_LaEstrella": qa5
+                }
+                st.session_state.final_results.append(registro_final)
+                
+                st.success(f"Examen entregado correctamente. Calificación automática Parte I (Opción múltiple): {pts_op} / 40 pts.")
                 st.info("La Parte II (Preguntas abiertas - 60 pts) será revisada por el Maestro Vrolok.")
 
         # 4. CLAVE DE RESPUESTAS DEL FACILITADOR
@@ -439,6 +496,71 @@ if nombre_user or es_instructor:
                 """, unsafe_allow_html=True)
             else:
                 st.info("🔒 Ingresa la Clave Maestra en el panel lateral o marca la casilla para consultar las claves pedagógicas.")
+
+        # 5. DESCARGA DE CALIFICACIONES (ADMINISTRADOR)
+        with eval_sub5:
+            st.markdown("### 📥 Panel del Administrador — Consulta y Descarga de Resultados")
+            
+            if es_instructor:
+                st.success("Acceso Administrador Confirmado: Aquí puedes visualizar y exportar todas las respuestas de los alumnos.")
+
+                # A. Resultados Evaluaciones Diagnósticas
+                st.markdown("#### **1. Registros de Evaluación Diagnóstica**")
+                if st.session_state.diag_results:
+                    df_diag = pd.DataFrame(st.session_state.diag_results)
+                    st.dataframe(df_diag, use_container_width=True)
+                    
+                    csv_diag = df_diag.to_csv(index=False).encode('utf-8')
+                    st.download_button(
+                        label="⬇️ Descargar Diagnósticos en CSV",
+                        data=csv_diag,
+                        file_name="evaluaciones_diagnosticas_anubis.csv",
+                        mime="text/csv",
+                        key="btn_down_diag"
+                    )
+                else:
+                    st.info("Aún no hay registros de evaluaciones diagnósticas enviadas.")
+
+                st.write("---")
+
+                # B. Resultados Guía de Observación (Práctica)
+                st.markdown("#### **2. Registros de Práctica Demostrativa (Guía de Observación 40%)**")
+                if st.session_state.prac_results:
+                    df_prac = pd.DataFrame(st.session_state.prac_results)
+                    st.dataframe(df_prac, use_container_width=True)
+                    
+                    csv_prac = df_prac.to_csv(index=False).encode('utf-8')
+                    st.download_button(
+                        label="⬇️ Descargar Prácticas en CSV",
+                        data=csv_prac,
+                        file_name="evaluaciones_practicas_anubis.csv",
+                        mime="text/csv",
+                        key="btn_down_prac"
+                    )
+                else:
+                    st.info("Aún no se han evaluado prácticas en vivo.")
+
+                st.write("---")
+
+                # C. Resultados Evaluación Final Sumativa
+                st.markdown("#### **3. Registros de Examen Sumativo Final (60%)**")
+                if st.session_state.final_results:
+                    df_final = pd.DataFrame(st.session_state.final_results)
+                    st.dataframe(df_final, use_container_width=True)
+                    
+                    csv_final = df_final.to_csv(index=False).encode('utf-8')
+                    st.download_button(
+                        label="⬇️ Descargar Exámenes Finales en CSV",
+                        data=csv_final,
+                        file_name="evaluaciones_finales_anubis.csv",
+                        mime="text/csv",
+                        key="btn_down_final"
+                    )
+                else:
+                    st.info("Aún no hay registros de exámenes finales sumativos enviados.")
+
+            else:
+                st.warning("🔒 Esta pestaña es exclusiva para el **Maestro Vrolok** / Administrador. Ingresa la Clave Maestra en la barra lateral para acceder.")
 
     # --- WIKI CON GESTIÓN ADMINISTRATIVA ---
     with tab_wiki:
