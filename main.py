@@ -44,7 +44,7 @@ st.markdown("""
 try:
     st.image("anubis-the-ancient-egyptian-jackal-headed-god-seat.jpeg", use_container_width=True)
 except Exception:
-    st.info("🌙 El Templo de Anubis — Cuestionario y Plataforma de Estudio")
+    st.info("🌙 El Templo de Anubis — Plataforma de Estudio y Enseñanza Esotérica")
 
 st.title("🌙 El Templo de Anubis")
 st.write("---")
@@ -64,17 +64,17 @@ if "wiki_posts" not in st.session_state:
 # --- BARRA LATERAL ---
 with st.sidebar:
     st.header("📝 Registro de Alumno")
-    nombre_user = st.text_input("Nombre Completo:")
-    fecha_inscripcion = st.date_input("Fecha de inicio:", datetime.now())
+    nombre_user = st.text_input("Nombre Completo:", key="sb_nombre")
+    fecha_inscripcion = st.date_input("Fecha de inicio:", datetime.now(), key="sb_fecha")
     st.write("---")
     st.header("🔐 Área del Instructor")
-    password = st.text_input("Clave Maestra:", type="password")
+    password = st.text_input("Clave Maestra:", type="password", key="sb_pass")
     
     es_instructor = (password == "anubis2026")
     
     if es_instructor:
         st.success("Acceso Maestro Activo")
-        st.link_button("📂 Abrir Presentación Maestra", "[https://docs.google.com/presentation/d/1dO3YrrZYeU4uNyeJEsMKxhjCSlC_P0GDpVcJr9w5m2Q/edit](https://docs.google.com/presentation/d/1dO3YrrZYeU4uNyeJEsMKxhjCSlC_P0GDpVcJr9w5m2Q/edit)")
+        st.link_button("📂 Carpeta Drive Completa del Curso", "https://drive.google.com/drive/folders/1fMVciKPGMWYx3Ymym69K3a3mFy3XbknB")
 
 # --- LÓGICA DE CONTENIDO ---
 if nombre_user or es_instructor:
@@ -102,45 +102,177 @@ if nombre_user or es_instructor:
         st.subheader("Santuario del Conocimiento")
         st.write("Selecciona una pestaña superior para acceder a tus lecciones, realizar tus evaluaciones o compartir en la Wiki.")
 
-    # --- LECCIONES CON INSTRUCCIONES ACTUALIZADAS ---
+    # --- MÓDULO 1: TAROT DE MARSELLA COMPLETO ---
     with tab1:
-        st.subheader("Módulo: Tarot de Marsella")
+        st.subheader("Módulo: Tarot de Marsella — Manual Hermenéutico & Simbología")
         
-        materiales = [
-            {
-                "titulo": "Material Clase 1", 
-                "instruccion": "Descarga el material de los arcanos mayores del tarot marsella y colorealos de acuerdo a tu percepcion.",
-                "url": "[https://drive.google.com/file/d/159pd32ErBY5ivTRUhZoY-sHxstGc9puB/view](https://drive.google.com/file/d/159pd32ErBY5ivTRUhZoY-sHxstGc9puB/view)", 
-                "dia": 0
-            },
-            {
-                "titulo": "Material Clase 2", 
-                "instruccion": "Descarga el pdf de los arcanos mayores del tarot marsella, ya que se ocuparan en las siguientes clases.",
-                "url": "[https://drive.google.com/file/d/1FOcbDLocK2i6xf_FH-APCF2GvM7iZwY5/view](https://drive.google.com/file/d/1FOcbDLocK2i6xf_FH-APCF2GvM7iZwY5/view)", 
-                "dia": 7
-            },
-            {
-                "titulo": "Material Clase 3", 
-                "instruccion": "Descarga el manual de tiradas para tener una amplia gama de opciones en tus lecturas adicionales a las que se te brindaron en clase.",
-                "url": "[https://drive.google.com/file/d/19nYTrsNW76GI4pLvGddXZlZ4XfMdgFeW/view](https://drive.google.com/file/d/19nYTrsNW76GI4pLvGddXZlZ4XfMdgFeW/view)", 
-                "dia": 14
-            },
-            {
-                "titulo": "Material Clase de Arcanos Menores", 
-                "instruccion": "El siguiente pdf incluye el tarot marsella completo para su utilizacion de forma personal.",
-                "url": "[https://drive.google.com/file/d/1jYaMsGXcIbMYw18GNNqUTbOyidi5UjWa/view](https://drive.google.com/file/d/1jYaMsGXcIbMYw18GNNqUTbOyidi5UjWa/view)", 
-                "dia": 21
-            }
-        ]
-        
-        for c in materiales:
-            if es_instructor or dias_pasados >= c["dia"]:
-                st.write(f"### ✅ {c['titulo']}")
-                st.write(f"ℹ️ *Instrucciones:* {c['instruccion']}")
-                st.link_button(f"Descargar material", c["url"])
-                st.write("---")
-            else:
-                st.warning(f"🔒 {c['titulo']} (Disponible en {c['dia'] - dias_pasados} días)")
+        # Enlace destacado a la carpeta del curso
+        st.markdown("### 📁 Repositorio General de Recursos")
+        st.link_button("📂 Abrir Carpeta Principal de Materiales y Presentaciones", "https://drive.google.com/drive/folders/1fMVciKPGMWYx3Ymym69K3a3mFy3XbknB")
+        st.write("---")
+
+        sub_m1, sub_m2, sub_m3, sub_m4 = st.tabs([
+            "📚 Materiales Descargables",
+            "🎨 Código de Colores y Anatomía",
+            "🃏 Los 22 Arcanos Mayores",
+            "🔮 Arcanos Menores, Tiradas y Ética"
+        ])
+
+        # 1. MATERIALES DESCARGABLES
+        with sub_m1:
+            st.markdown("### 📄 Guías de Estudio y Libros PDF")
+            materiales = [
+                {
+                    "titulo": "Material Clase 1 - Arcanos Mayores para Colorear", 
+                    "instruccion": "Descarga el material de los arcanos mayores del tarot marsella y coloréalos de acuerdo a tu percepción.",
+                    "url": "https://drive.google.com/file/d/159pd32ErBY5ivTRUhZoY-sHxstGc9puB/view", 
+                    "dia": 0
+                },
+                {
+                    "titulo": "Material Clase 2 - Manual de Arcanos Mayores", 
+                    "instruccion": "Descarga el PDF de los arcanos mayores del tarot marsella para el estudio simbólico profundo.",
+                    "url": "https://drive.google.com/file/d/1FOcbDLocK2i6xf_FH-APCF2GvM7iZwY5/view", 
+                    "dia": 7
+                },
+                {
+                    "titulo": "Material Clase 3 - Manual de Tiradas y Lectura", 
+                    "instruccion": "Descarga el manual de tiradas para tener una amplia gama de opciones en tus lecturas.",
+                    "url": "https://drive.google.com/file/d/19nYTrsNW76GI4pLvGddXZlZ4XfMdgFeW/view", 
+                    "dia": 14
+                },
+                {
+                    "titulo": "Material Clase de Arcanos Menores y Tarot Completo", 
+                    "instruccion": "El siguiente PDF incluye el mazo completo de Marsella para utilización personal y consulta.",
+                    "url": "https://drive.google.com/file/d/1jYaMsGXcIbMYw18GNNqUTbOyidi5UjWa/view", 
+                    "dia": 21
+                }
+            ]
+            
+            for c in materiales:
+                if es_instructor or dias_pasados >= c["dia"]:
+                    st.write(f"#### ✅ {c['titulo']}")
+                    st.write(f"ℹ️ *Instrucción:* {c['instruccion']}")
+                    st.link_button("Descargar Archivo PDF", c["url"])
+                    st.write("---")
+                else:
+                    st.warning(f"🔒 {c['titulo']} (Disponible en {c['dia'] - dias_pasados} días)")
+
+        # 2. CÓDIGO DE COLORES Y ANATOMÍA SAGRADA
+        with sub_m2:
+            st.markdown("### 🎨 El Código de los Colores")
+            st.caption('"En Marsella, el color no es decorativo, es un estado de la materia y el espíritu."')
+            st.markdown("""
+            - 🔴 **Rojo:** Acción, sangre, impulso vital e instinto.
+            - 🔵 **Azul:** Recepción, espíritu, paz interior e intuición.
+            - ⚪ **Blanco:** Pureza, origen, potencial puro e inocencia.
+            - 🟡 **Amarillo:** Inteligencia, luz divina, conciencia solar y lucidez.
+            - 🟢 **Verde:** Naturaleza, crecimiento, sanación y vida.
+            - 🟤 **Carne:** Humanidad, encarnación, trabajo terrenal y ego.
+            """)
+
+            st.write("---")
+            st.markdown("### 🧘 Anatomía Sagrada y Lenguaje Corporal")
+            col_anat1, col_anat2 = st.columns(2)
+            with col_anat1:
+                st.markdown("#### **1. La Postura**")
+                st.markdown("- **Figuras Sedentes:** Estabilidad, trono, poder establecido y reflexión (ej. La Emperatriz, El Emperador, La Justicia).")
+                st.markdown("- **Figuras de Pie:** Acción, transición, búsqueda y dinamismo (ej. El Mago, El Loco, El Ermitaño).")
+                
+                st.markdown("#### **2. Dirección de la Mirada**")
+                st.markdown("- **Mirada a la Izquierda:** Hacia el pasado, lo femenino, el origen, la introspección.")
+                st.markdown("- **Mirada Frontal:** Presente absoluto, confrontación, justicia y transparencia.")
+                st.markdown("- **Mirada a la Derecha:** Hacia el futuro, lo masculino, la acción y la evolución.")
+
+            with col_anat2:
+                st.markdown("#### **3. El Lenguaje de las Manos**")
+                st.markdown("- **Mano Dominante (Derecha):** Ejecución, acción manifiesta y voluntad.")
+                st.markdown("- **Mano Izquierda:** Intención, receptividad y estado interno.")
+                st.markdown("- **Manos Pasivas:** Abiertas o descansando. Indican recepción y paciencia (La Papisa).")
+                st.markdown("- **Manos Activas:** Sujetando cetros o espadas. Indican mando y poder (El Emperador).")
+                st.markdown("- **Manos Ocultas:** Bajo mantos o espaldas. Simbolizan secretos o reservas energéticas.")
+
+        # 3. LOS 22 ARCANOS MAYORES
+        with sub_m3:
+            st.markdown("### 🃏 Estructura de los 3 Septenarios")
+            
+            with st.expander("⭐ Arcano Cero: LE MAT (El Loco)"):
+                st.markdown("**Arquetipo:** El buscador incansable.")
+                st.markdown("**Concepto Clave:** Potencial puro, impulso vital incipiente y viajero sin ataduras. Representa la libertad absoluta y la energía original antes de la manifestación.")
+
+            with st.expander("🏛 Septenario I: Plano Material (Arcanos I a VII)"):
+                st.markdown("""
+                | Arcano | Nombre | Arquetipo | Significado Interpretativo |
+                |---|---|---|---|
+                | **I** | Le Bateleur (El Mago) | Iniciación y Habilidad | Recursos sobre la mesa, creatividad y potencial práctico. |
+                | **II** | La Papesse (La Sacerdotisa) | Intuición y Sabiduría | Gestación, estudio interior, conocimiento oculto. |
+                | **III** | L'Impératrice (La Emperatriz) | Expresión y Abundancia | Generación de ideas, palabra creativa, fertilidad. |
+                | **IV** | L'Empereur (El Emperador) | Estructura y Poder | Estabilidad material, ley, orden terrenal y autoridad. |
+                | **V** | Le Pape (El Papa) | Guía y Transmisión | Magisterio, mediador espiritual, ética y enseñanza. |
+                | **VI** | L'Amoureux (El Enamorado) | Elección y Vínculo | Libre albedrío, encrucijada, decisiones afectivas. |
+                | **VII** | Le Chariot (El Carro) | Triunfo y Dirección | Movimiento victorioso, dominio de opuestos y progreso. |
+                """)
+
+            with st.expander("🧠 Septenario II: Plano Mental (Arcanos VIII a XIV)"):
+                st.markdown("""
+                | Arcano | Nombre | Arquetipo | Significado Interpretativo |
+                |---|---|---|---|
+                | **VIII** | La Justice (La Justicia) | Equilibrio y Verdad | Causa y efecto, claridad de juicio y ajuste necesario. |
+                | **IX** | L'Hermite (El Ermitaño) | Introspección | Búsqueda de la luz interior, paciencia y retiro sabio. |
+                | **X** | La Roue de Fortune | Ciclos y Cambio | Giro del destino, transitoriedad y nuevos comienzos. |
+                | **XI** | La Force (La Fuerza) | Fuerza Sutil | Inteligencia emocional sobre el instinto y poder interno. |
+                | **XII** | Le Pendu (El Colgado) | Pausa y Nueva Mirada | Entrega voluntaria, cambio de perspectiva y gestación. |
+                | **XIII** | L'Arcan Sans Nom (La Muerte) | Transmutación | Corte radical, liberación del pasado y renovación. |
+                | **XIV** | Tempérance (La Templanza) | Armonía y Sanación | Fluidez, moderación, equilibrio de energías y paz. |
+                """)
+
+            with st.expander("✨ Septenario III: Plano Espiritual (Arcanos XV a XXI)"):
+                st.markdown("""
+                | Arcano | Nombre | Arquetipo | Significado Interpretativo |
+                |---|---|---|---|
+                | **XV** | Le Diable (El Diablo) | Deseo y Pasión | Sombra personal, magnetismo, ataduras y creatividad oculta. |
+                | **XVI** | La Maison Dieu (La Torre) | Liberación | Desarticulación de falsas estructuras y apertura. |
+                | **XVII** | L'Étoile (La Estrella) | Fe y Purificación | Lugar en el mundo, esperanza renovada y entrega. |
+                | **XVIII** | La Lune (La Luna) | Inconsciente | Miedos profundos, intuición, imaginación e ilusiones. |
+                | **XIX** | Le Soleil (El Sol) | Fraternidad | Éxito solar, amor fraternal, claridad y abundancia. |
+                | **XX** | Le Jugement (El Juicio) | Despertar | Renacimiento, vocación superior y nueva conciencia. |
+                | **XXI** | Le Monde (El Mundo) | Realización | Integración absoluta, logro de la meta y plenitud. |
+                """)
+
+        # 4. ARCANOS MENORES, TIRADAS Y ÉTICA
+        with sub_m4:
+            st.markdown("### 🌿 Arcanos Menores: La Realidad Cotidiana")
+            col_pal1, col_pal2 = st.columns(2)
+            with col_pal1:
+                st.markdown("#### **Los 4 Palos y Elementos**")
+                st.markdown("- 🟡 **Oros (Tierra):** Plano material, dinero, salud y cuerpo físico.")
+                st.markdown("- 🔵 **Copas (Agua):** Plano emocional, relaciones, amor e intuición.")
+                st.markdown("- ⚔️ **Espadas (Aire):** Plano intelectual, pensamiento, justicia y conflicto.")
+                st.markdown("- 🔥 **Bastos (Fuego):** Plano creativo, trabajo, pasión y sexo.")
+
+            with col_pal2:
+                st.markdown("#### **Figuras de la Corte**")
+                st.markdown("- **Sota (Valet):** Aprendiz / Latente. Inicio de un estudio o mensaje.")
+                st.markdown("- **Caballero:** Acción / Movimiento. Transporte de energía y cambio.")
+                st.markdown("- **Reina:** Interioridad / Gestión. Dominio del mundo interno.")
+                st.markdown("- **Rey:** Autoridad / Emisión. Poder exterior y mando.")
+
+            st.write("---")
+            st.markdown("### 🔮 El Arte de la Interpretación y Tiradas")
+            
+            st.markdown("#### **Estructuras Lineales Básicas**")
+            st.markdown("- **Línea del Tiempo:** Carta 1 (Pasado) | Carta 2 (Presente) | Carta 3 (Futuro probable).")
+            st.markdown("- **Tesis - Antítesis:** Carta 1 (A favor) | Carta 2 (En contra) | Carta 3 (Síntesis / Consejo).")
+            st.markdown("- **Estado del Ser:** Carta 1 (Mente) | Carta 2 (Corazón) | Carta 3 (Acción Física).")
+            st.markdown("- **La Cruz Simple:** Centro (Síntesis) | Izquierda (Ayuda) | Derecha (Obstáculo) | Arriba (Meta) | Abajo (Realidad).")
+
+            st.write("---")
+            st.markdown("### 📜 Código de Ética del Consultor Profesional (EC0301)")
+            st.markdown("""
+            1. **Confidencialidad:** Lo que se dice en la lectura queda en la lectura.
+            2. **No-Juicio:** Neutralidad absoluta ante las elecciones del consultante.
+            3. **Empoderamiento:** Ayudar al consultante a tomar las riendas de su vida sin generar dependencia.
+            4. **Honestidad y No Dañar:** Evitar diagnósticos de salud o predicciones fatalistas.
+            """)
 
     with tab2: st.info("Próximamente: Materiales de Runas Vikingas.")
     with tab3: st.info("Próximamente: Materiales de Wicca y Magia.")
@@ -163,19 +295,19 @@ if nombre_user or es_instructor:
             st.caption("Objetivo: Conocer el nivel previo de los participantes sobre Tarot y simbolismo.")
             
             with st.form("form_diag"):
-                qd1 = st.text_area("1. ¿Qué entiendes por 'Arcanos Mayores'?")
-                qd2 = st.text_area("2. Menciona los cuatro elementos asociados a los palos del Tarot y su correspondencia (Fuego, Agua, Aire, Tierra):")
+                qd1 = st.text_area("1. ¿Qué entiendes por 'Arcanos Mayores'?", key="qd1_k")
+                qd2 = st.text_area("2. Menciona los cuatro elementos asociados a los palos del Tarot y su correspondencia (Fuego, Agua, Aire, Tierra):", key="qd2_k")
                 qd3 = st.radio("3. ¿Qué significa cuando un personaje del Tarot mira hacia la izquierda?", 
-                               ["Hacia el futuro y la acción activa", "Hacia el pasado, el origen, lo femenino o la introspección", "Hacia la confrontación directa en el presente", "Neutralidad absoluta"], index=None)
-                qd4 = st.text_area("4. Nombra tres colores principales del Tarot de Marsella y un significado simbólico para cada uno:")
-                qd5 = st.text_area("5. ¿Qué representa 'El Loco' (Le Mat) en el viaje del Tarot?")
+                               ["Hacia el futuro y la acción activa", "Hacia el pasado, el origen, lo femenino o la introspección", "Hacia la confrontación directa en el presente", "Neutralidad absoluta"], index=None, key="qd3_k")
+                qd4 = st.text_area("4. Nombra tres colores principales del Tarot de Marsella y un significado simbólico para cada uno:", key="qd4_k")
+                qd5 = st.text_area("5. ¿Qué representa 'El Loco' (Le Mat) en el viaje del Tarot?", key="qd5_k")
                 qd6 = st.radio("6. Diferencia entre figuras sedentes y figuras de pie en la iconografía marsellesa:", 
-                               ["Sedentes = Acción y dinamismo / De pie = Estabilidad", "Sedentes = Estabilidad, poder establecido y reflexión / De pie = Acción, dinamismo y transición", "Ambas significan lo mismo"], index=None)
-                qd7 = st.text_area("7. ¿Qué simboliza la mano derecha en la mayoría de los arcanos?")
+                               ["Sedentes = Acción y dinamismo / De pie = Estabilidad", "Sedentes = Estabilidad, poder establecido y reflexión / De pie = Acción, dinamismo y transición", "Ambas significan lo mismo"], index=None, key="qd6_k")
+                qd7 = st.text_area("7. ¿Qué simboliza la mano derecha en la mayoría de los arcanos?", key="qd7_k")
                 qd8 = st.radio("8. ¿En qué septenario se ubica 'La Justicia' y qué plano representa?", 
-                               ["Septenario I - Plano Material", "Septenario II - Plano Mental y Transmutación", "Septenario III - Plano Espiritual"], index=None)
-                qd9 = st.text_area("9. ¿Qué es el 'código cromático' según la tradición marsellesa?")
-                qd10 = st.text_area("10. ¿Cuál es el objetivo general de este curso?")
+                               ["Septenario I - Plano Material", "Septenario II - Plano Mental y Transmutación", "Septenario III - Plano Espiritual"], index=None, key="qd8_k")
+                qd9 = st.text_area("9. ¿Qué es el 'código cromático' según la tradición marsellesa?", key="qd9_k")
+                qd10 = st.text_area("10. ¿Cuál es el objetivo general de este curso?", key="qd10_k")
                 
                 sub_diag = st.form_submit_button("Enviar Evaluación Diagnóstica")
                 if sub_diag:
@@ -188,7 +320,7 @@ if nombre_user or es_instructor:
             
             if es_instructor:
                 st.markdown("<span class='teacher-badge'>MODO EVALUADOR ACTIVO</span>", unsafe_allow_html=True)
-                nombre_evaluado = st.text_input("Nombre del Participante Evaluado:", placeholder="Ej. Juan Pérez")
+                nombre_evaluado = st.text_input("Nombre del Participante Evaluado:", placeholder="Ej. Juan Pérez", key="m_eval_nombre")
                 fecha_eval = st.date_input("Fecha de Evaluación:", datetime.now(), key="fech_eval_m")
                 
                 col_obs1, col_obs2 = st.columns(2)
@@ -208,7 +340,7 @@ if nombre_user or es_instructor:
                 st.markdown(f"**Porcentaje de Desempeño Práctico:** `{porcentaje_obs}%`")
                 st.metric("Ponderación Formativa Final (40% máx):", f"{peso_final_obs:.1f}% / 40%")
                 
-                obs_comments = st.text_area("Comentarios del Facilitador:", placeholder="Anota aquí las fortalezas y áreas de mejora del participante...")
+                obs_comments = st.text_area("Comentarios del Facilitador:", placeholder="Anota aquí las fortalezas y áreas de mejora del participante...", key="m_obs_comm")
                 if st.button("Guardar Evaluación Práctica", key="btn_save_prac"):
                     st.success(f"Evaluación de {nombre_evaluado} guardada exitosamente con {peso_final_obs:.1f}% / 40%.")
             else:
@@ -378,6 +510,3 @@ if nombre_user or es_instructor:
                         "texto": nuevo_comentario
                     })
                     st.rerun()
-            st.write("---")
-else:
-    st.warning("👈 Por favor, identifícate en el panel de la izquierda para entrar al Templo.")
